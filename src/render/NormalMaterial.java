@@ -1,5 +1,6 @@
 package render;
 
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +13,7 @@ import render.Material.MaterialProperty;
 
 public class NormalMaterial extends Material {
 
-	public NormalMaterial() {
+	public NormalMaterial(Object ... blue) {
 		super();
 
 	}

@@ -19,6 +19,8 @@ public class DiffuseTexturedMaterial extends Material {
 	static Map<String, Raster> loaded=new HashMap<>();
 	
 	Raster raster;
+	public boolean glow;
+	
 	public DiffuseTexturedMaterial(String img) throws IOException {
 		
 
@@ -41,6 +43,9 @@ public class DiffuseTexturedMaterial extends Material {
 
 		MaterialProperty ret=new MaterialProperty();
 		ret.diffuse=col;
+		if(glow)
+			ret.emissive=1.7f;
+		
 		return ret;
 	}
 

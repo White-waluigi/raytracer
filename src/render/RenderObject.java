@@ -7,8 +7,8 @@ import ray.Vec3;
 import ray.Vec4;
 import render.Material.MaterialProperty;
 
-public abstract class RenderObject {
-	public static final int MAX_BOUNCE=2;
+public abstract class RenderObject implements BSVObject{
+	public static final int MAX_BOUNCE=15;
 	Vec3 col=new Vec3(Color.red);
 	public Scene parent;
 	Material material=null;
@@ -39,4 +39,5 @@ public abstract class RenderObject {
 		}
 
 	}
+
 }

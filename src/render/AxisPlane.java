@@ -40,8 +40,8 @@ public class AxisPlane extends RenderObject {
 		
 //		return new Ray(ray.dir.inv(axis.ordinal()),ray.pos.add(ray.dir.scale(d)));
 		
-		Ray ret=new Ray(impact,getNormal());
-		ret.normal=getNormal();
+		Ray ret=new Ray(impact,getNormal(ray));
+		ret.normal=getNormal(ray);
 		//calcLight(ret, impact.xy(axis.ordinal()).scale(.5f/width).add(new Vec2(.5)),ray,getNormal());
 		return ret;
 		
@@ -50,9 +50,17 @@ public class AxisPlane extends RenderObject {
 		return r.pos.xy(axis.ordinal()).scale(.5f/width).add(new Vec2(.5));
 		
 	}
-	public Vec3 getNormal() {
+	public Vec3 getNormal(Ray ray) {
 		
-		return Vec3.Identity(axis.ordinal()).scale(Math.signum(offset)*-1).normalize();
+		float dist=ray.pos.i(axis.ordinal())-offset;
+		
+		return Vec3.Identity(axis.ordinal()).scale(Math.signum(dist)).normalize();
+	}
+
+
+	@Override
+	public BoundingSphere getBoundingSphere() {
+		return new BoundingSphere( Vec3.Identity(axis.ordinal()), (float) (width*Math.sqrt(2)));
 	}
 
 }

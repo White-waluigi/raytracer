@@ -13,7 +13,8 @@ public abstract class Material {
 		public MaterialProperty() {
 			
 		}
-		Vec3 diffuse=new Vec3(0);
+		public  Vec3 diffuse=new Vec3(0);
+		public float emissive=(.005f);
 		
 		public float roughness=(float) .05;
 		public  float metallic=(float)0.85;

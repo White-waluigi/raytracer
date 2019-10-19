@@ -11,26 +11,28 @@ import render.Material.MaterialProperty;
 
 public class Scene {
 	public List<RenderObject> objs=new ArrayList<>();
-	float ambient=.1f;
-	Vec4 attenuation=new Vec4(9,5,90,1000);
-	Vec3 mainLight=new Vec3(0,19,8);
+	BSVNode root=null;
+	
+	float ambient=0.16f;
+	Vec4 attenuation=new Vec4(9,4,90,1000);
+	Vec3 mainLight=new Vec3(0,19,-8);
 	float shadowSoftness=0.01f;
+	
+	
 	public void add(RenderObject r) {
 		r.parent=this;
 		objs.add(r);
-		
-		
 	}
 	public Scene() {
 		//add(new Sphere(mainLight,.1f,new SolidColorMaterial(new Vec3(1000f))  ));
 	}
-	class Combo{
+	public static class Combo{
 		RenderObject r;		
 		Ray ray;
 		
 	}
 	public Combo checkIntersect(Ray ray) {
-		
+		/*
 		Combo retv = new Combo();
 		Vec3 shortest=new Vec3(Float.MAX_VALUE);
 		Ray c=new Ray(shortest, shortest);
@@ -38,6 +40,7 @@ public class Scene {
 		for(RenderObject o:objs) {
 			Ray ret=o.intersect(ray);
 			if (ret != null && shortest.subtract(ray.pos).length()>ret.pos.subtract(ray.pos).length()) {
+
 				shortest=ret.pos;
 				retv.ray=ret;
 				retv.r=o;
@@ -46,8 +49,15 @@ public class Scene {
 			}
 			
 		}
-		
+		*/
+		Combo retv=root.intersect(ray);
+
 		return retv;
+	}
+	public void  optimize() {
+		root=(BSVNode.makeTree(objs));
+		
+		
 	}
 	public Ray checkIntersectColor(Ray ray) {
 		
@@ -72,7 +82,7 @@ public class Scene {
 //		}
 		if(c.r==null) {
 			Ray t=new Ray(new Vec3(Float.MAX_VALUE),new Vec3(Float.MAX_VALUE));
-			t.light=new Vec3(Color.black);
+			t.light=new Vec3(Color.DARK_GRAY);
 			return t;
 		}
 		
@@ -82,6 +92,8 @@ public class Scene {
 		
 	}	
 	public Vec3 calcLight(Ray ret,MaterialProperty prop,Vec3 normal) {
+		Vec3 constLight=(prop.diffuse.scale(ambient+prop.emissive));
+		
 		Vec3 dist=mainLight.subtract(ret.pos);
 		Ray r=new Ray(ret.pos,dist.normalize().add(Vec3.rand(shadowSoftness)).normalize());
 		r.pos=r.pos.add(r.dir.scale(0.001f));
@@ -89,7 +101,7 @@ public class Scene {
 		
 		//System.out.println(c.ray.pos.subtract(ret.pos).length()+","+dist.length());
 		if(c.r==null || c.ray.pos.subtract(ret.pos).length()<dist.length()) {
-			return  prop.diffuse.scale(ambient);
+			return  constLight;
 			
 		}
 		
@@ -98,8 +110,8 @@ public class Scene {
 		float g=Math.max(lightDist.normalize().dot(normal)  ,0);
 		g=(g*calcLightIntensity(lightDist.length()));
 		g*=g;
-		g+=ambient;
-		return prop.diffuse.scale(g);
+		
+		return prop.diffuse.scale(g).add(constLight);
 
 	}
 	

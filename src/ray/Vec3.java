@@ -187,6 +187,35 @@ public final class Vec3 {
 	public Color toColor() {
 		return new Color(range(x), range(y), range(z),1);
 	}
+	public Color toColor(float gamma) {
+		float x0=(float) .1;
+		
+		float xx=gammaTransform(x,  x0,gamma);
+		float yy=gammaTransform(y,  x0,gamma);
+		float zz=gammaTransform(z,  x0,gamma);
+		
+		return new Vec3(xx,yy,zz).toColor();
+		
+		
+		
+		
+	}
+	private float gammaTransform(float x,float x0,float y) {
+		
+		
+		
+		if(x<x0) {
+			float s=(float) (y/ (x0*(y-1)+Math.pow(x0, 1-y)) );
+			
+			return s*x;
+			
+		}
+		float d=(float) ((1)/ (Math.pow(x0, y)*(y-1) +1)-1);
+		
+		return (float) ((1+d)*Math.pow(x, y)-d);
+		
+		
+	}
 	private float range(float x) {
 		return Math.max(Math.min(x, 1f),0.001f);
 		
@@ -317,5 +346,9 @@ public final class Vec3 {
 
 	public Vec3 add(float shadowSoftness) {
 		return this.add(new Vec3(shadowSoftness));
+	}
+
+	public Vec3 middle(Vec3 p) {
+		return subtract(p).scale(.5f).add(p);
 	}
 }
