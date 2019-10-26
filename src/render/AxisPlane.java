@@ -5,6 +5,8 @@ import java.awt.Color;
 import ray.Vec2;
 import ray.Vec3;
 
+
+//Plane that is Limited a single Axis. 
 public class AxisPlane extends RenderObject {
 
 	public enum Axis {
@@ -26,6 +28,8 @@ public class AxisPlane extends RenderObject {
 	}
 
 
+	
+	//Calculate Intersection Point and Normal direction
 	@Override
 	public Ray intersect(Ray ray) {
 		//Vec3 v=ray.dir.subtract(ray.pos);
@@ -34,6 +38,8 @@ public class AxisPlane extends RenderObject {
 		float d=(offset-ray.pos.i(axis.ordinal()))/v.i(axis.ordinal());
 		
 		Vec3 impact=ray.pos.add(ray.dir.scale(d));
+		
+		//Detect wheter we have an interesction with the ray
 		if( d<0 || ! Vec3.Identity(axis.ordinal()).subtract(impact).AxisRange(axis.ordinal(), width, -width))
 			return null;
 		

@@ -188,6 +188,10 @@ public final class Vec3 {
 		return new Color(range(x), range(y), range(z),1);
 	}
 	public Color toColor(float gamma) {
+		if(gamma==1)
+			return toColor();
+		
+			
 		float x0=(float) .1;
 		
 		float xx=gammaTransform(x,  x0,gamma);
@@ -350,5 +354,39 @@ public final class Vec3 {
 
 	public Vec3 middle(Vec3 p) {
 		return subtract(p).scale(.5f).add(p);
+	}
+	public static Vec3 rainbow(float f) {
+		
+		f=Math.abs(f)%1;
+		
+		float g=f*6;
+		f=f-((int)g);
+		
+		float asc=f;
+		float desc=1.f-f;
+		
+		switch((int)g) {
+		case 0:
+			return new Vec3(1,asc,0);
+		case 1:
+			return new Vec3(desc,1,0);
+		case 2:
+			return new Vec3(0,1,asc);
+		case 3:
+			return new Vec3(0,desc,1);
+		case 4:
+			return new Vec3(asc,0,1);
+		case 5:
+			return new Vec3(1,0,desc);
+		}
+		
+		return null;
+		
+		
+	}
+
+	public static Vec3 bias(float roughness) {
+		return new Vec3((Math.random()-.5),(Math.random()-.5),(Math.random()-.5)).scale(roughness);
+		
 	}
 }

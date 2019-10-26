@@ -5,7 +5,9 @@ import java.awt.Color;
 import ray.Vec3;
 import ray.Vec4;
 
+//Holds all the data that a single Ray needs
 public class Ray {
+	
 	public Vec3 dir;
 	public Vec3 pos;
 	public Vec3 light;

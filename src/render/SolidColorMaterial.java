@@ -5,6 +5,8 @@ import java.awt.Color;
 import ray.Vec2;
 import ray.Vec3;
 
+
+//Single color material
 public class SolidColorMaterial extends Material {
 	Vec3 color;
 	

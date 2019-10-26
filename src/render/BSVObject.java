@@ -2,7 +2,10 @@ package render;
 
 import ray.Vec3;
 
+//Either leaf or Node of BSVTree
 public interface BSVObject{
+	
+	//Bounding Sphere to Determine collision
 	public class BoundingSphere
 	{
 		public final Vec3 pos;
@@ -12,14 +15,18 @@ public interface BSVObject{
 			this.pos=p;
 			this.rad=r;
 		}
+		//Distance between two points furthest apart
 		float distance(BoundingSphere b) {
 			return b.rad+rad+pos.subtract(b.pos).length();
 			
 			
 		}
+		//Take two Spheres and return one that encompasses both
 		public BoundingSphere merge(BoundingSphere bsvObject) {
 			return new BoundingSphere( pos.middle(bsvObject.pos),distance(bsvObject));
 		}
+		
+		//Ray Sphere intersection
 		public Ray intersect(Ray ray) {
 			Vec3 p=pos.subtract(ray.pos);
 			
@@ -45,6 +52,14 @@ public interface BSVObject{
 			}
 			
 			return null;
+		}
+		
+		//Check if Ray starts inside Sphere
+		public boolean collide(Ray r) {
+			if(r.pos.subtract(pos).length()<rad) {
+				return true;
+			}
+			else return intersect(r)!=null;
 		}
 	}
 	public BoundingSphere getBoundingSphere();

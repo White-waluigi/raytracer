@@ -1,13 +1,10 @@
 package ray;
 
 public class Tools {
-	public float getAngle(Vec2 angle) {
-	    float a = (float) Math.toDegrees(Math.atan2(angle.y, angle.x));
-
-	    if(a < 0){
-	        a += 360;
-	    }
-
-	    return a;
+	public float getAngle(Vec2 a) {
+	    float angle = (float) Math.toDegrees(Math.atan2(a.y, a.x));
+	    if(angle < 0)
+	    	angle += 360;
+	    return angle;
 	}
 }

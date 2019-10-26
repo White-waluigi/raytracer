@@ -4,21 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ray.Vec3;
+import render.BSVObject.BoundingSphere;
 import render.Scene.Combo;
 
-
+//This is used for Optimisation
 public class BSVNode implements BSVObject{
 
 	
+	//A BSVObject is either a Render Object or a BSV Node
 	public List<BSVObject> children=null;
 	Vec3 color;
 	
 	private BSVNode() {
 		children=new ArrayList<BSVObject>();
+		//Color can be used to identfy Pairs
 		color=new  Vec3(Math.random(),Math.random(),Math.random());
 
 	}
 
+	//Ever BSV Node has 2 Nodes or 2 or 1 RenderObjects as children
 	public void add(BSVObject o) {
 
 		
@@ -27,38 +31,21 @@ public class BSVNode implements BSVObject{
 		
 	}
 
+	//Make Tree from List
 	public static BSVNode makeTree(List<RenderObject> allObjs) {
 		
-		
+		//Create a List of BSVObject from List of RenderObjects
 		List<BSVObject> leaves=new ArrayList<BSVObject>();
 		for(RenderObject x:allObjs) {
 			leaves.add(x);
 		}
-//		
-//		while(!allObjs.isEmpty()) {
-//			RenderObject first=allObjs.remove(0);
-//			float min=Float.MAX_VALUE;
-//			RenderObject partner=null;
-//			
-//			for(RenderObject x:allObjs) {
-//				float dist=first.getBounding().distance(x.getBounding());
-//				if(min>dist) {
-//					min=dist;
-//					partner=x;
-//				}
-//				
-//				BSVNode l = new BSVNode();
-//				l.add(first);
-//				l.add(partner);
-//				
-//				leaves.add(l);
-//				
-//			}
-//		}
-		
+
+		//Create a binary tree from all the remaining Nodes and RenderObjects
 		while(leaves.size()!=1) {
 			List<BSVObject> temp=new ArrayList<BSVObject>();
 
+			
+			//Work through every level of the tree
 			while(!leaves.isEmpty()) {
 				BSVObject first=leaves.remove(0);
 				float min=Float.MAX_VALUE;
@@ -89,16 +76,31 @@ public class BSVNode implements BSVObject{
 			leaves.addAll(temp);
 			
 		}
-		return (BSVNode) leaves.remove(0);
+		BSVObject x=leaves.remove(0);
+		
+		
+		//If we only have a single object, add it to a Node, so a Node can be returned
+		if(!(x instanceof BSVNode)) {
+			BSVNode n=new BSVNode();
+			n.add(x);
+			return n;
+			
+			
+		}
+		return (BSVNode) x;
 		
 		
 	}
 
+	//Get Bounding Sphere from Childrens Bounding Sphere
 	@Override
 	public BoundingSphere getBoundingSphere() {
-		if(children.size()!=2)
-			throw new RuntimeException();
 		
+		//return new BoundingSphere(new Vec3(0),10e12f);
+		if(children.size()==1)
+			return children.get(0).getBoundingSphere();
+		
+			
 		return children.get(0).getBoundingSphere().merge(children.get(1).getBoundingSphere());
 		
 	}
@@ -106,6 +108,7 @@ public class BSVNode implements BSVObject{
 	public String toString() {
 		return toString(0);
 	}
+	//Get a reqursive tree String
 	public String toString(int i) {
 		String s="";
 		int k=i;
@@ -131,12 +134,18 @@ public class BSVNode implements BSVObject{
 		return s;
 	}
 
+	
+	//Check Intersection recusively
 	public Combo intersect(Ray ray) {
 		
-		if(getBoundingSphere().intersect(ray)==null) {
+		
+		//Return empty if no collision
+		if(!getBoundingSphere().collide(ray)) {
 			return new Combo();
 		}
 		
+		
+		//Otherwise check children for collision
 		Combo retv = new Combo();
 		Vec3 shortest=new Vec3(Float.MAX_VALUE);
 		Ray c=new Ray(shortest, shortest);
@@ -150,18 +159,17 @@ public class BSVNode implements BSVObject{
 				ret=o.intersect(ray);
 
 			}else {
+				//Heres the recursion
 				Combo tc=((BSVNode)ob).intersect(ray);
 				ret=tc.ray;
 				o=tc.r;
 				
 			}
+			//Update to the shortest intersection
 			if (ret != null && shortest.subtract(ray.pos).length()>ret.pos.subtract(ray.pos).length()) {
-
 				shortest=ret.pos;
 				retv.ray=ret;
 				retv.r=o;
-				
-				
 			}
 			
 			

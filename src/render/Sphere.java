@@ -8,6 +8,8 @@ import ray.Vec2;
 import ray.Vec3;
 import ray.Vec4;
 
+
+//Renderable Sphere
 public class Sphere extends RenderObject{
 	Vec3 pos;
 	float rad;
@@ -32,8 +34,11 @@ public class Sphere extends RenderObject{
 
 	@Override
 	public Ray intersect(Ray ray) {
+		//Use existing code to calculate intersect
 		return new BoundingSphere(pos,rad).intersect(ray);
 	}
+	
+	//Spherical Projection (Globe Style) using the normal and some trigonometry
 	public Vec2 getUV(Ray r) {
 		float x=(float) (Math.atan2((r.normal.y),r.normal.x)/(2*Math.PI))+.5f+(SWRenderer.frame*.01f);
 		//float y=(float) (Math.atan2((normal.y),normal.z+1)/(2*Math.PI));
@@ -41,6 +46,7 @@ public class Sphere extends RenderObject{
 		return new Vec2(x,y);
 		
 	}
+	//BOunding Sphere same as Geometry
 	@Override
 	public BoundingSphere getBoundingSphere() {
 		return new BoundingSphere(pos,rad);

@@ -7,6 +7,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.Vector;
 
+
+//This is used to adjust the Scene in real time
 public class WASDKeyListener implements KeyListener, MouseMotionListener {
 
 	Vec3 off = new Vec3(0);
@@ -18,6 +20,8 @@ public class WASDKeyListener implements KeyListener, MouseMotionListener {
 	int reverse=1;
 	float quali=1;
 	float qual=1;
+	
+	public float gamma=1.f;
 	
 	boolean change=false;
 
@@ -63,6 +67,10 @@ public class WASDKeyListener implements KeyListener, MouseMotionListener {
 			rotp-=.1;break;
 		case 'n':
 			rotp+=.1;break;
+		case 'z':
+			gamma-=.05f;break;
+		case 'u':
+			gamma+=.05f;break;
 		default:
 			off = new Vec3(0);
 			rotp=0;

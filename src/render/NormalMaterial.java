@@ -11,6 +11,7 @@ import ray.Vec2;
 import ray.Vec3;
 import render.Material.MaterialProperty;
 
+//Just returns the UV-Coordinate as color used for testing 
 public class NormalMaterial extends Material {
 
 	public NormalMaterial(Object ... blue) {
@@ -19,7 +20,6 @@ public class NormalMaterial extends Material {
 	}
 	@Override
 	public MaterialProperty get(Vec2 uv) {
-
 		MaterialProperty ret=new MaterialProperty();
 		ret.diffuse= uv.xy0();
 		return ret;

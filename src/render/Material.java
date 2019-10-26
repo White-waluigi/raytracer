@@ -3,6 +3,8 @@ package render;
 import ray.Vec2;
 import ray.Vec3;
 
+
+//Material property for single impact point
 public abstract class Material {
 	RenderObject parent;
 	
@@ -13,11 +15,17 @@ public abstract class Material {
 		public MaterialProperty() {
 			
 		}
+		
+		//Diffuse color
 		public  Vec3 diffuse=new Vec3(0);
+		//Glow Color
 		public float emissive=(.005f);
 		
-		public float roughness=(float) .05;
-		public  float metallic=(float)0.85;
+		//Fresnel reflection
+		public float roughness=(float) 0.05;
+		//"Shinyness"
+		public  float metallic=(float)0.15;
+		public float specular=200f;
 		
 		
 	}

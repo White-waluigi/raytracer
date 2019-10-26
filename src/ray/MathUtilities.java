@@ -31,6 +31,8 @@ package ray;
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+import java.util.Random;
+
 public final class MathUtilities {
 	public static final float EPSILON = 0.000001f; // 32 bits
 	public static final float PI = (float) Math.PI;
@@ -281,8 +283,14 @@ public final class MathUtilities {
 		return ret;
 		
 	}
-	public static Vec3 randVec(float asp) {
-		return new Vec3((Math.random() - .5) * asp,1, Math.random() - .5);
+	public static Vec3 randVec(float asp,Random rand) {
+		return new Vec3((rand.nextFloat() - .5) * asp,1, rand.nextFloat() - .5);
 
 	}
+
+	public static double clamp(float dot) {
+		return clamp(dot, 0,1);
+	}
+
+
 }
