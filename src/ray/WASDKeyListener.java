@@ -21,7 +21,7 @@ public class WASDKeyListener implements KeyListener, MouseMotionListener {
 	float quali=1;
 	float qual=1;
 	
-	public float gamma=1.f;
+	public float gamma=0.45f;
 	
 	boolean change=false;
 

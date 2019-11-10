@@ -6,7 +6,8 @@ import ray.Vec2;
 import ray.Vec3;
 
 
-//Plane that is Limited a single Axis. 
+//Quadratic Plane that is Limited to a single Axis.
+
 public class AxisPlane extends RenderObject {
 
 	public enum Axis {
@@ -63,7 +64,9 @@ public class AxisPlane extends RenderObject {
 		return Vec3.Identity(axis.ordinal()).scale(Math.signum(dist)).normalize();
 	}
 
-
+	
+	
+	//Get bounding Sphere using pythagoras
 	@Override
 	public BoundingSphere getBoundingSphere() {
 		return new BoundingSphere( Vec3.Identity(axis.ordinal()), (float) (width*Math.sqrt(2)));

@@ -22,7 +22,7 @@ public class DiffuseTexturedMaterial extends Material {
 	
 	Raster raster;
 	//Dirty glow hack
-	public boolean glow;
+	public boolean glow=false;
 	
 	//Load during Scene setup
 	
@@ -55,7 +55,7 @@ public class DiffuseTexturedMaterial extends Material {
 		ret.specular=0;
 		ret.diffuse=col;
 		if(glow)
-			ret.emissive=1.7f;
+			ret.emissive=1.0f;
 		
 		return ret;
 	}

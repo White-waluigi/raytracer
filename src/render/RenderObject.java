@@ -12,10 +12,10 @@ import render.Material.MaterialProperty;
 //Also takes care of recursive rays
 public abstract class RenderObject implements BSVObject{
 	//Limit of Ray bounce reflections
-	public static final int MAX_BOUNCE=2;
-	Vec3 col=new Vec3(Color.red);
+	public static final int MAX_BOUNCE=3;
+	public Vec3 col=new Vec3(Color.red);
 	public Scene parent;
-	Material material=null;
+	public Material material=null;
 
 	//Check for intersection and return normal+impact point
 	public abstract Ray intersect(Ray ray);

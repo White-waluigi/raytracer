@@ -389,4 +389,8 @@ public final class Vec3 {
 		return new Vec3((Math.random()-.5),(Math.random()-.5),(Math.random()-.5)).scale(roughness);
 		
 	}
+
+	public Vec3 mul(Vec3 a) {
+		return new Vec3(x*a.x,y*a.y,z*a.z);
+	}
 }

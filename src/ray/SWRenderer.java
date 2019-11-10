@@ -17,6 +17,7 @@ import render.Ray;
 import render.Scene;
 import render.SolidColorMaterial;
 import render.Sphere;
+import render.lighting.Lighting;
 import scenes.RandomSpheres;
 import scenes.SceneTemplate;
 import scenes.Snowman;
@@ -70,7 +71,7 @@ public class SWRenderer extends JFrame {
 
 
 
-	SWRenderer(SceneTemplate sd) throws IOException {
+	SWRenderer(SceneTemplate sd,Lighting l) throws IOException {
 		super();
 		//Set Prefered Size
 		setSize(500, 500);
@@ -89,6 +90,8 @@ public class SWRenderer extends JFrame {
 		
 		//Generate BSV TREE
 		s.optimize();
+		
+		s.light=l;
 
 		setTitle("Cores:"+CORES);
 		

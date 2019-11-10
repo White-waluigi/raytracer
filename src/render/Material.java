@@ -19,7 +19,7 @@ public abstract class Material {
 		//Diffuse color
 		public  Vec3 diffuse=new Vec3(0);
 		//Glow Color
-		public float emissive=(.005f);
+		public float emissive=(.00f);
 		
 		//Fresnel reflection
 		public float roughness=(float) 0.05;

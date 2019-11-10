@@ -21,7 +21,11 @@ public class SpaceBalls implements SceneTemplate{
 			s.add(new Sphere(new Vec3(-3, 17, 3), 1, Color.green));
 			s.add(new Sphere(new Vec3(-5, 14, 10), -1, Color.blue));
 			s.add(new Sphere(new Vec3(-1, 30, 6), 5, "world.jpg"));
-			s.add(new Sphere(new Vec3(-5, 30, -19), 10, "rain.jpg"));
+			
+			DiffuseTexturedMaterial dm=new DiffuseTexturedMaterial("rain.jpg");
+			dm.glow=true;
+			
+			s.add(new Sphere(new Vec3(-5, 30, -19), 10, dm));
 			s.add(new Sphere(new Vec3(4, 13, -1), 1, Color.lightGray));
 			s.add(new Sphere(new Vec3(-9, 110, 5), 1, Color.magenta));
 

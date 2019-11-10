@@ -9,6 +9,7 @@ import ray.Vec3;
 //Single color material
 public class SolidColorMaterial extends Material {
 	Vec3 color;
+	public double glow=0;
 	
 	public SolidColorMaterial(Vec3 color) {
 		super();
@@ -22,6 +23,7 @@ public class SolidColorMaterial extends Material {
 	public MaterialProperty get(Vec2 uv) {
 		MaterialProperty mat=new MaterialProperty();
 		mat.diffuse=color;
+		mat.emissive=(float) (glow);
 		return mat;
 	}
 

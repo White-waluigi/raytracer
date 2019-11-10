@@ -4,21 +4,30 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import ray.MathUtilities;
 import ray.Vec2;
 import ray.Vec3;
 import ray.Vec4;
 import render.Material.MaterialProperty;
+import render.lighting.Fullbright;
+import render.lighting.Lighting;
+import render.lighting.PathTracer;
+import render.lighting.RayTracer;
 
 public class Scene {
 	public List<RenderObject> objs = new ArrayList<>();
 	BSVNode root = null;
-
-	float ambient = 0.06f;
+	
+	public float ambient = 0.06f;
 	// Constant-Linear-Quadratic Falloff
 	public Vec4 attenuation = new Vec4(9, 4, 90, 1000);
 	public Vec3 mainLight = new Vec3(0, 19, 8);
-	float shadowSoftness = 0.01f;
+	public float shadowSoftness = 0.01f;
+
+	public Color backColor=Color.BLACK;
+	public Lighting light=null;
 
 	public void add(RenderObject r) {
 		r.parent = this;
@@ -33,8 +42,8 @@ public class Scene {
 	}
 
 	public static class Combo {
-		RenderObject r;
-		Ray ray;
+		public RenderObject r;
+		public Ray ray;
 
 	}
 
@@ -59,12 +68,12 @@ public class Scene {
 		// If no intersection, return void color
 		if (c.r == null) {
 			Ray t = new Ray(new Vec3(Float.MAX_VALUE), new Vec3(Float.MAX_VALUE));
-			t.light = new Vec3(Color.DARK_GRAY);
+			t.light = new Vec3(backColor);
 			return t;
 		}
 
 		// Calculate Light for Intersection
-		c.r.calcLight(c.ray, c.r.getUV(c.ray), ray, c.ray.normal);
+		light.calcLight(c.ray, c.r.getUV(c.ray), ray, c.ray.normal,c.r,this);
 		return c.ray;
 
 	}
@@ -72,47 +81,8 @@ public class Scene {
 	// Calculate Ambient Light, Specular Light and diffuse Light
 	// Uses Constant-Linear-Quadratic Falloff
 	public Vec3 calcLight(Ray ret, MaterialProperty prop, Vec3 normal, Vec3 camera) {
-
-		// Constant Light = Ambient*Diffuse
-		Vec3 constLight = (prop.diffuse.scale(ambient + prop.emissive));
-
-		// Get vector between impact and light
-		Vec3 dist = mainLight.subtract(ret.pos);
-
-		// Create new Ray for shadow testing
-		Ray r = new Ray(ret.pos, dist.normalize().add(Vec3.rand(shadowSoftness)).normalize());
-
-		// make sure to avoid start-point-intersection
-		r.pos = r.pos.add(r.dir.scale(0.001f));
-
-		// Check for intersection without calculating color
-		Combo c = checkIntersect(r);
-
-		// If no intersection, just use Ambient Light (and reflection)
-		if (c.r != null && c.ray.pos.subtract(ret.pos).length() < (dist.length())) {
-			return constLight;
-		}
-
-		// Caclulate Ambient Lighting
-		float g = Math.max(dist.normalize().dot(normal), 0);
-		g = (g * calcLightIntensity(dist.length()));
-		g *= g;
-		
-		Vec3 spec=new  Vec3(0);
-		if (prop.specular != 0) {
-			// Calculate Specular Lighting
-			Vec3 viewDir = camera.subtract(ret.pos).normalize();
-			Vec3 LightToObjDir = dist.normalize();
-			Vec3 h = LightToObjDir.add(viewDir).normalize();
-
-			float specular = (float) Math.pow(MathUtilities.clamp(ret.normal.dot(h)), prop.specular) * 5.f;
-
-			// Specular Lighting always white
-			spec = new Vec3(specular).scale(g);
-		}
-		// Add everything together for final Light value
-		return prop.diffuse.scale(g).add(constLight).add(spec);
-
+		//return light.calcLight(ret, prop, normal, camera);
+		throw new RuntimeErrorException(null);
 	}
 
 	// Calculate falloff

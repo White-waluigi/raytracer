@@ -1,6 +1,7 @@
 package ray;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -10,12 +11,18 @@ import java.io.IOException;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+import render.lighting.Fullbright;
+import render.lighting.Lighting;
+import render.lighting.PathTracer;
+import render.lighting.RayTracer;
+import scenes.Cornell;
 import scenes.RandomSpheres;
 import scenes.SceneTemplate;
 import scenes.Snowman;
@@ -60,6 +67,15 @@ public class SelectorWindow extends JFrame{
 
         
         
+
+        
+        Lighting[] petStrings = {new PathTracer(),new RayTracer() ,new Fullbright()};
+        //Create the combo box, select item at index 4.
+        //Indices start at 0, so 4 specifies the pig.
+        JComboBox<Lighting> petList = new JComboBox<>(petStrings);
+        petList.setMaximumSize( petList.getPreferredSize() );
+      	panel.add(petList);
+
         JButton c2;
         c2 = new JButton("Spaceballs");
         c2.addActionListener(new ActionListener() {
@@ -68,7 +84,7 @@ public class SelectorWindow extends JFrame{
 			public void actionPerformed(ActionEvent arg0) {
 				try {
 					dis.dispose();
-					new SWRenderer(new SpaceBalls());
+					new SWRenderer(new SpaceBalls(),(Lighting) petList.getSelectedItem());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -86,7 +102,7 @@ public class SelectorWindow extends JFrame{
 				try {
 					dis.dispose();
 					
-					new SWRenderer(new RandomSpheres());
+					new SWRenderer(new RandomSpheres(),(Lighting) petList.getSelectedItem());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -104,7 +120,7 @@ public class SelectorWindow extends JFrame{
 				
 					try {
 						dis.dispose();
-						new SWRenderer(new Snowman());
+						new SWRenderer(new Snowman(),(Lighting) petList.getSelectedItem());
 					
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -124,7 +140,7 @@ public class SelectorWindow extends JFrame{
 				
 					try {
 						dis.dispose();
-						new SWRenderer(new Testplane());
+						new SWRenderer(new Testplane(),(Lighting) petList.getSelectedItem());
 					
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
@@ -136,7 +152,26 @@ public class SelectorWindow extends JFrame{
 		});
         panel.add(c2);
         
-        
+
+        c2 = new JButton("Cornell");     
+        c2.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+					try {
+						dis.dispose();
+						new SWRenderer(new Cornell(),(Lighting) petList.getSelectedItem());
+					
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+					
+				
+			}
+		});
+        panel.add(c2);        
         this.setMinimumSize(new Dimension(200,500));
 	}
 }
