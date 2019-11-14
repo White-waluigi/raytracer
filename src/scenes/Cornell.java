@@ -21,9 +21,9 @@ public class Cornell implements SceneTemplate {
 			SolidColorMaterial sm=new SolidColorMaterial(Color.white);
 			sm.glow=10.0;
 			
-			s.add(new Sphere(new Vec3(-2, 25, -19), 10, Color.DARK_GRAY));
-			s.add(new Sphere(new Vec3(5, 22, 7.5), 3, Color.YELLOW));
-			s.add(new Sphere(new Vec3(-7, 28, 9), 2, sm));
+			s.add(new Sphere(new Vec3(-2, 25, -19), 10, sm));
+			s.add(new Sphere(new Vec3(4, 24, 4), 6,new Color(240, 240, 255)));
+			s.add(new Sphere(new Vec3(-7, 22, 7), 3, Color.YELLOW));
 //
 //			s.add(new Sphere(new Vec3(0, 10, 5), 1f, "carpet.jpg"));
 //
@@ -37,18 +37,18 @@ public class Cornell implements SceneTemplate {
 
 			DiffuseTexturedMaterial d= new DiffuseTexturedMaterial("zelda.jpg");
 			
-			s.add(new AxisPlane(AxisPlane.Axis.Y, 30,d, 10));
+			s.add(new AxisPlane(AxisPlane.Axis.Y, 30,new SolidColorMaterial(Color.lightGray), 10));
 			
-			s.add(new AxisPlane(AxisPlane.Axis.Y, -30, new SolidColorMaterial(Color.WHITE), 10));
+			s.add(new AxisPlane(AxisPlane.Axis.Y, -30, new SolidColorMaterial(Color.lightGray), 10));
 			SolidColorMaterial sm2=new SolidColorMaterial(Color.white);
 			sm2.glow=0;
 			s.add(new AxisPlane(AxisPlane.Axis.Z, 10,sm2, 30));
-			s.add(new AxisPlane(AxisPlane.Axis.X, 10, new SolidColorMaterial(Color.RED), 30));
+			s.add(new AxisPlane(AxisPlane.Axis.X, 10, new SolidColorMaterial(Color.BLUE), 30));
 
 	
-			s.add(new AxisPlane(AxisPlane.Axis.Z, -10, new SolidColorMaterial(Color.white), 30));
+			s.add(new AxisPlane(AxisPlane.Axis.Z, -10, new SolidColorMaterial(Color.lightGray), 30));
 			
-			s.add(new AxisPlane(AxisPlane.Axis.X, -10, new SolidColorMaterial(Color.GREEN), 30));
+			s.add(new AxisPlane(AxisPlane.Axis.X, -10, new SolidColorMaterial(Color.RED), 30));
 			
 		} catch (Exception e) {
 		}
